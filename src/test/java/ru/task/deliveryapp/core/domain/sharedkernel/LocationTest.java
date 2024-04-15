@@ -32,7 +32,7 @@ public final class LocationTest {
     }
 
     public void testDistanceTo_different() {
-        assertEquals(5, Location.create(2, 7).distanceTo(Location.create(5, 9)));
+        assertEquals(3, Location.create(2, 7).distanceTo(Location.create(1, 9)));
     }
 
     public void testDistanceTo_equals() {

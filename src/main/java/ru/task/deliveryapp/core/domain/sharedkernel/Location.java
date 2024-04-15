@@ -41,6 +41,6 @@ public class Location {
      * @return расстояние
      */
     public int distanceTo(Location target) {
-        return Math.abs(target.getX() - x + target.getY() - y);
+        return Math.abs(target.getX() - x) + Math.abs(target.getY() - y);
     }
 }
