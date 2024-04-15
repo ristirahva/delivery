@@ -21,7 +21,7 @@ public class Location {
 
     public static Location create(int x, int y) {
         if (x < MIN_VALUE || x > MAX_VALUE || y < MIN_VALUE || y > MAX_VALUE) {
-            throw new ValidationException("Координаты должна принимать значения в пределах от 1 до 10 включительно");
+            throw new ValidationException(String.format("Координаты должна принимать значения в пределах от %d до %d включительно", MIN_VALUE, MAX_VALUE));
         }
         Location location = new Location(x, y);
         return location;

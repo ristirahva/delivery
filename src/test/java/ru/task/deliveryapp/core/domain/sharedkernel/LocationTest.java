@@ -16,10 +16,26 @@ public final class LocationTest {
     }
 
     @Test
-    public void testCreate_negative() {
+    public void testCreate_negative1() {
         assertThrows(ValidationException.class,
                 ()-> {
                     Location.create(-2, 0);
                 });
+    }
+
+    @Test
+    public void testCreate_negative2() {
+        assertThrows(ValidationException.class,
+                ()-> {
+                    Location.create(11, 10);
+                });
+    }
+
+    public void testDistanceTo_different() {
+        assertEquals(5, Location.create(2, 7).distanceTo(Location.create(5, 9)));
+    }
+
+    public void testDistanceTo_equals() {
+        assertEquals(0, Location.create(4,6).distanceTo(Location.create(4, 6)));
     }
 }
