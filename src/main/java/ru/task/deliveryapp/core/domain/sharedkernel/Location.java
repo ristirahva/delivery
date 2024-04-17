@@ -10,15 +10,20 @@ public class Location {
     public static int MAX_VALUE = 10;
 
     private int x, y;
-    private Location() {
-
-    }
+    private Location() {}
 
     private Location (int x, int y) {
         this.x = x;
         this.y = y;
     }
 
+    /**
+     * Создание коорлинаты
+     *
+     * @param x абсцисса
+     * @param y ордината
+     * @return координата
+     */
     public static Location create(int x, int y) {
         if (x < MIN_VALUE || x > MAX_VALUE || y < MIN_VALUE || y > MAX_VALUE) {
             throw new ValidationException(String.format("Координаты должна принимать значения в пределах от %d до %d включительно", MIN_VALUE, MAX_VALUE));
