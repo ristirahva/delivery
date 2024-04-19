@@ -1,6 +1,5 @@
 package ru.task.deliveryapp.core.domain.sharedkernel;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.task.deliveryapp.exception.ValidationException;
 
