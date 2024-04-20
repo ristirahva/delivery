@@ -51,7 +51,8 @@ public enum Transport {
                 .findAny()
                 .orElseThrow(
                         () -> {
-                            return new ObjectNotFoundException(String.format("Транспорт с id = %d не найден", id));
+                            // Транспорт с id = %d не найден
+                            return new ObjectNotFoundException(String.format("Nothing has found by id = %d", id));
                         }
                 );
     }
@@ -67,7 +68,8 @@ public enum Transport {
                 .filter(transport -> transport.getName().equals(name))
                 .findAny()
                 .orElseThrow( () -> {
-                    return new ObjectNotFoundException(String.format("Транспорт с названием '%s' не найден", name));
+                    // Транспорт с названием '%s' не найден
+                    return new ObjectNotFoundException(String.format("Nothing has found by name = '%s'", name));
                 });
     }
 }

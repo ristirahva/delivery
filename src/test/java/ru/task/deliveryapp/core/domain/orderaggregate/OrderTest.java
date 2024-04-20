@@ -9,18 +9,19 @@ import ru.task.deliveryapp.exception.WrongStateException;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class OrderTest {
     @Test
     public void testCreate() {
         UUID id = UUID.randomUUID();
         Order order = Order.create(id, Location.create(2, 3), Weight.create("7"));
-        assertEquals(id, order.getId());
-        assertEquals(2, order.getLocation().getX());
-        assertEquals(3, order.getLocation().getY());
-        assertEquals(7, order.getWeight().getValue());
+        assertAll("Testing create() method",
+                () -> assertEquals(id, order.getId()),
+                () -> assertEquals(2, order.getLocation().getX()),
+                () -> assertEquals(3, order.getLocation().getY()),
+                () -> assertEquals(7, order.getWeight().getWeightValue())
+        );
     }
 
     @Test

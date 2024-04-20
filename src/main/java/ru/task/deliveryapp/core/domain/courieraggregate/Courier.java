@@ -1,14 +1,27 @@
 package ru.task.deliveryapp.core.domain.courieraggregate;
 
+import jakarta.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 import ru.task.deliveryapp.core.domain.sharedkernel.Location;
 import ru.task.deliveryapp.exception.WrongStateException;
 
 import java.util.UUID;
 
+@Entity
 public class Courier {
+
+    private final static Location INITIAL_LOCATION = Location.create(1, 1);
+
+    @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(name = "id", updatable = false, nullable = false)
+    //@Type(value = "org.hibernate.type.UUIDCharType")
     private UUID id;
     private String name;
     private Transport transport;
+    @Embedded
     private Location location;
     private CourierStatus status;
 
@@ -18,7 +31,7 @@ public class Courier {
         this.id = UUID.randomUUID();
         this.name = name;
         this.transport = transport;
-        this.location = Location.create(1, 1);
+        this.location = INITIAL_LOCATION;
         this.status = CourierStatus.NOT_AVAILABLE;
     }
 
@@ -56,7 +69,8 @@ public class Courier {
      */
     public void startWork() {
         if (status == CourierStatus.BUSY) {
-            throw new WrongStateException("Курьер в статусе 'занят' не может начинать работу.");
+            // Курьер не может начать работу, поскольку уже занят.
+            throw new WrongStateException("A courier must not start to work because he/she is already busy.");
         }
         else {
             status = CourierStatus.READY;
@@ -68,7 +82,8 @@ public class Courier {
      */
     public void stopWork() {
         if (status == CourierStatus.BUSY) {
-            throw new WrongStateException("Курьер в статусе 'занят' не может заканчивать работу.");
+            // Курьер не может закончить работу, поскольку занят.
+            throw new WrongStateException("A courier must not stop to work because he/she is busy.");
         }
         else {
             status = CourierStatus.NOT_AVAILABLE;
@@ -80,10 +95,12 @@ public class Courier {
      */
     public void inWork() {
         if (status == CourierStatus.BUSY) {
-            throw new WrongStateException("Курьер уже занят.");
+            // Курьер уже занят.
+            throw new WrongStateException("A courier is already busy.");
         }
         if (status == CourierStatus.NOT_AVAILABLE) {
-            throw new WrongStateException("Курьер недоступен.");
+            // Курьер недоступен.
+            throw new WrongStateException("A courier is not available.");
         }
         status = CourierStatus.BUSY;
     }

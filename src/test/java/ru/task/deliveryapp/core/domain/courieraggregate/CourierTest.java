@@ -4,61 +4,89 @@ import org.junit.jupiter.api.Test;
 import ru.task.deliveryapp.core.domain.sharedkernel.Location;
 import ru.task.deliveryapp.exception.WrongStateException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CourierTest {
 
     @Test
     public void testCreate() {
-        Courier courier = Courier.create("Бободжан", Transport.fromName(Transport.BICYCLE.getName()));
-        assertEquals("Бободжан", courier.getName());
-        assertEquals(Transport.BICYCLE.getName(), courier.getTransport().getName());
-        assertEquals(1, courier.getLocation().getX());
-        assertEquals(1, courier.getLocation().getY());
-        assertEquals(CourierStatus.NOT_AVAILABLE, courier.getStatus());
+        Courier courier = Courier.create("Курьер Бободжан", Transport.fromName(Transport.BICYCLE.getName()));
+        assertAll("Testing create() method",
+                () -> assertEquals("Курьер Бободжан", courier.getName()),
+                () -> assertEquals(Transport.BICYCLE, courier.getTransport()),
+                () -> assertEquals(1, courier.getLocation().getX()),
+                () -> assertEquals(1, courier.getLocation().getY()),
+                () -> assertEquals(CourierStatus.NOT_AVAILABLE, courier.getStatus())
+        );
     }
 
     @Test
-    public void testMove() {
+    public void testMove_pedestrian() {
         Location targetLocation = Location.create(6, 9);
-        Courier courier1 = Courier.create("Курьер 1", Transport.fromName("Пешеход"));
-        Courier courier2 = Courier.create("Курьер 2", Transport.fromName("Велосипед"));
-        Courier courier3 = Courier.create("Курьер 3", Transport.fromName("Мотороллер"));
-        Courier courier4 = Courier.create("Курьер 4", Transport.fromName("Автомобиль"));
+        Courier courier = Courier.create("Пеший курьер", Transport.fromName("Пешеход"));
+        courier.move(targetLocation);
+        assertAll("Testing testMove() method with pedestrian way of moving",
+                () -> assertEquals(2, courier.getLocation().getX()),
+                () -> assertEquals(1, courier.getLocation().getY())
+        );
+    }
 
-        courier1.move(targetLocation);
-        assertEquals(2, courier1.getLocation().getX());
-        assertEquals(1, courier1.getLocation().getY());
+    @Test
+    public void testMove_bicycle() {
+        Location targetLocation = Location.create(6, 9);
+        Courier courier = Courier.create("Курьер на велосипеде", Transport.fromName("Велосипед"));
+        courier.move(targetLocation);
+        assertAll("Testing testMove() method with bicycle",
+                () -> assertEquals(3, courier.getLocation().getX()),
+                () -> assertEquals(1, courier.getLocation().getY())
+        );
+    }
 
-        courier2.move(targetLocation);
-        assertEquals(3, courier2.getLocation().getX());
-        assertEquals(1, courier2.getLocation().getY());
+    @Test
+    public void testMove_scooter() {
+        Location targetLocation = Location.create(6, 9);
+        Courier courier = Courier.create("Курьер на мотороллере", Transport.fromName("Мотороллер"));
+        courier.move(targetLocation);
+        assertAll("Testing testMove() method with scooter, step 1",
+                () -> assertEquals(4, courier.getLocation().getX()),
+                () -> assertEquals(1, courier.getLocation().getY())
+        );
+        courier.move(targetLocation);
+        assertAll("Testing testMove() method with scooter, step 2",
+                () -> assertEquals(6, courier.getLocation().getX()),
+                () -> assertEquals(2, courier.getLocation().getY())
+        );
+    }
 
-        courier3.move(targetLocation);
-        assertEquals(4, courier3.getLocation().getX());
-        assertEquals(1, courier3.getLocation().getY());
+    @Test
+    public void testMove_car() {
+        Location targetLocation = Location.create(6, 9);
+        Courier courier = Courier.create("Курьер на автомобиле", Transport.fromName("Автомобиль"));
 
-        courier3.move(targetLocation);
-        assertEquals(6, courier3.getLocation().getX());
-        assertEquals(2, courier3.getLocation().getY());
+        courier.move(targetLocation);
+        assertAll("Testing testMove() method with car, step 1",
+                () -> assertEquals(5, courier.getLocation().getX()),
+                () -> assertEquals(1, courier.getLocation().getY())
+        );
 
-        courier4.move(targetLocation);
-        assertEquals(5, courier4.getLocation().getX());
-        assertEquals(1, courier4.getLocation().getY());
+        courier.move(targetLocation);
+        assertAll("Testing testMove() method with car, step 2",
+                () -> assertEquals(6, courier.getLocation().getX()),
+                () -> assertEquals(4, courier.getLocation().getY())
+        );
 
-        courier4.move(targetLocation);
-        assertEquals(6, courier4.getLocation().getX());
-        assertEquals(4, courier4.getLocation().getY());
+        courier.move(targetLocation);
+        assertAll("Testing testMove() method with car, step 3",
+                () -> assertEquals(6, courier.getLocation().getX()),
+                () -> assertEquals(8, courier.getLocation().getY())
+        );
 
-        courier4.move(targetLocation);
-        assertEquals(6, courier4.getLocation().getX());
-        assertEquals(8, courier4.getLocation().getY());
-
-        courier4.move(targetLocation);
-        assertEquals(6, courier4.getLocation().getX());
-        assertEquals(9, courier4.getLocation().getY());
-        assertEquals(CourierStatus.READY, courier4.getStatus());
+        courier.move(targetLocation);
+        assertAll("Testing testMove() method with car, step 4, the final one",
+                () -> assertEquals(6, courier.getLocation().getX()),
+                () -> assertEquals(9, courier.getLocation().getY()),
+                () -> assertEquals(CourierStatus.READY, courier.getStatus())
+        );
     }
 
     @Test
@@ -129,14 +157,16 @@ public class CourierTest {
     @Test
     public void testCalculateTimeToPoint() {
         Location targetLocation = Location.create(6, 9);
-        Courier courier1 = Courier.create("Курьер 1", Transport.fromName("Пешеход"));
-        Courier courier2 = Courier.create("Курьер 2", Transport.fromName("Велосипед"));
-        Courier courier3 = Courier.create("Курьер 3", Transport.fromName("Мотороллер"));
-        Courier courier4 = Courier.create("Курьер 4", Transport.fromName("Автомобиль"));
+        Courier courier1 = Courier.create("Курьер-пешеход", Transport.fromName("Пешеход"));
+        Courier courier2 = Courier.create("Курьер-велосипедист", Transport.fromName("Велосипед"));
+        Courier courier3 = Courier.create("Курьер-мотороллерщик", Transport.fromName("Мотороллер"));
+        Courier courier4 = Courier.create("Курьер-автоводитель", Transport.fromName("Автомобиль"));
 
-        assertEquals(13, courier1.calculateTimeToPoint(targetLocation));
-        assertEquals(7, courier2.calculateTimeToPoint(targetLocation));
-        assertEquals(5, courier3.calculateTimeToPoint(targetLocation));
-        assertEquals(4, courier4.calculateTimeToPoint(targetLocation));
+        assertAll("Testing calculateTimeToPoint() method",
+                () -> assertEquals(13, courier1.calculateTimeToPoint(targetLocation)),
+                () -> assertEquals(7,  courier2.calculateTimeToPoint(targetLocation)),
+                () -> assertEquals(5,  courier3.calculateTimeToPoint(targetLocation)),
+                () -> assertEquals(4,  courier4.calculateTimeToPoint(targetLocation))
+        );
     }
 }

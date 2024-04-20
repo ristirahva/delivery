@@ -1,5 +1,7 @@
 package ru.task.deliveryapp.core.domain.orderaggregate;
 
+import jakarta.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
 import ru.task.deliveryapp.core.domain.courieraggregate.Courier;
 import ru.task.deliveryapp.core.domain.sharedkernel.Location;
 import ru.task.deliveryapp.core.domain.sharedkernel.Weight;
@@ -7,11 +9,18 @@ import ru.task.deliveryapp.exception.WrongStateException;
 
 import java.util.UUID;
 
+@Entity
+@Table(name="delivery_order")   // order - ключевое слово, поэтому так
 public class Order {
+    @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
-    private UUID courierId;
+    private UUID courierId; // сознательно не привязываю пока Courier к Order, поскольку это тема следующих занятий
     private OrderStatus status;
     private Location location;
+    @Embedded
     private Weight weight;
 
     private Order() {}
@@ -72,7 +81,8 @@ public class Order {
             status = OrderStatus.COMPLETED;
         }
         else {
-            throw new WrongStateException("Заказ не может быть завершён, поскольку не был назначен");
+            // Заказ не может быть завершён, поскольку не был назначен.
+            throw new WrongStateException("An order must non be completed because it has not be assigned.");
         }
     }
 }

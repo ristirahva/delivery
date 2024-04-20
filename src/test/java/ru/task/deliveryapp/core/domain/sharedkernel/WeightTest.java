@@ -1,6 +1,5 @@
 package ru.task.deliveryapp.core.domain.sharedkernel;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.task.deliveryapp.exception.ValidationException;
 
@@ -11,7 +10,7 @@ public class WeightTest {
     public void testCreate_positive() {
         Weight weight = Weight.create("29");
         assertNotNull(weight);
-        assertEquals(29, weight.getValue());
+        assertEquals(29, weight.getWeightValue());
     }
 
     @Test
