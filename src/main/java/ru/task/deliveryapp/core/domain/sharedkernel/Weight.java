@@ -9,21 +9,14 @@ public class Weight implements Comparable<Weight>{
     private int weightValue;
 
     private Weight() {}
-    private Weight(String input){
-        try {
-            weightValue = Integer.valueOf(input);
-        }
-        catch(NumberFormatException nfe) {
-            // Неправильный формат
-            throw new ValidationException(String.format("Wring format: '%s'", input));
-        }
+    private Weight(int input){
+        weightValue = input;
         if (weightValue <= 0) {
-            // Недопустимое значение
-            throw new ValidationException("Illegal value: " + weightValue);
+            throw new ValidationException(String.format("Illegal value: %d, must be positive", weightValue));
         }
     }
 
-    public static Weight create(String input) {
+    public static Weight create(int input) {
         return new Weight(input);
     }
 

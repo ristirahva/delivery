@@ -1,15 +1,15 @@
 package ru.task.deliveryapp.core.ports;
 
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
-import ru.task.deliveryapp.core.domain.courieraggregate.Courier;
-import org.springframework.data.repository.CrudRepository;
-import ru.task.deliveryapp.core.domain.courieraggregate.CourierStatus;
+import ru.task.deliveryapp.core.domain.aggregate.courier.Courier;
+import ru.task.deliveryapp.infrastructure.adapters.postgres.entity.CourierEntity;
 
-import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
 
-@Repository
-public interface CourierRepository extends CrudRepository<Courier, Long> {
-    @Query(value = "SELECT * FROM courier c WHERE c.status=1", nativeQuery = true)
-    Collection<Courier> getAllActive();
+public interface CourierRepository {
+    Courier add(Courier courier);
+    void update(Courier courier);
+    Courier get(UUID courierId);
+    List<Courier> getAllReady();
+    List<Courier> getAllBusy();
 }

@@ -1,38 +1,28 @@
-package ru.task.deliveryapp.core.domain.courieraggregate;
+package ru.task.deliveryapp.core.domain.aggregate.courier;
 
-import jakarta.persistence.*;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
+import io.micrometer.common.util.StringUtils;
 import ru.task.deliveryapp.core.domain.sharedkernel.Location;
+import ru.task.deliveryapp.exception.ValidationException;
 import ru.task.deliveryapp.exception.WrongStateException;
+import ru.task.deliveryapp.infrastructure.adapters.postgres.entity.CourierEntity;
 
 import java.util.UUID;
 
-@Entity
 public class Courier {
-
     private final static Location INITIAL_LOCATION = Location.create(1, 1);
 
-    @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(name = "id", updatable = false, nullable = false)
-    //@Type(value = "org.hibernate.type.UUIDCharType")
     private UUID id;
     private String name;
     private Transport transport;
-    @Embedded
     private Location location;
     private CourierStatus status;
 
-    private Courier() {}
-
-    private Courier(String name, Transport transport) {
-        this.id = UUID.randomUUID();
+    private Courier(UUID id, String name, Transport transport, Location location, CourierStatus status) {
+        this.id = id;
         this.name = name;
         this.transport = transport;
-        this.location = INITIAL_LOCATION;
-        this.status = CourierStatus.NOT_AVAILABLE;
+        this.location = location;
+        this.status = status;
     }
 
     /**
@@ -43,7 +33,21 @@ public class Courier {
      * @return          курьер
      */
     public static Courier create(String name, Transport transport) {
-        return new Courier(name, transport);
+        if (StringUtils.isBlank(name)) {
+            throw new ValidationException("Courier name must not be blank");
+        }
+        return new Courier(UUID.randomUUID(), name, transport, INITIAL_LOCATION, CourierStatus.NOT_AVAILABLE);
+    }
+
+    /**
+     * Создание курьера со всеми параметрами (для маппинга из БД)
+     *
+     * @param name      имя курьера
+     * @param transport транспорт курьера
+     * @return          курьер
+     */
+    public static Courier create(UUID id, String name, Transport transport, Location location, CourierStatus status) {
+        return new Courier(id, name, transport, location, status);
     }
 
     /**
@@ -136,4 +140,5 @@ public class Courier {
     public CourierStatus getStatus() {
         return status;
     }
+
 }

@@ -1,4 +1,4 @@
-package ru.task.deliveryapp.core.domain.courieraggregate;
+package ru.task.deliveryapp.core.domain.aggregate.courier;
 
 import ru.task.deliveryapp.core.domain.sharedkernel.Weight;
 import ru.task.deliveryapp.exception.ObjectNotFoundException;
@@ -6,10 +6,10 @@ import ru.task.deliveryapp.exception.ObjectNotFoundException;
 import java.util.stream.Stream;
 
 public enum Transport {
-    PEDESTRIAN(1, "Пешеход", 1, Weight.create("1")),
-    BICYCLE(3, "Велосипед", 2, Weight.create("4")),
-    SCOOTER(2, "Мотороллер", 3, Weight.create("6")),
-    CAR(4, "Автомобиль", 4, Weight.create("8"));
+    PEDESTRIAN(1, "Пешеход", 1, Weight.create(1)),
+    BICYCLE(3, "Велосипед", 2, Weight.create(4)),
+    SCOOTER(2, "Мотороллер", 3, Weight.create(6)),
+    CAR(4, "Автомобиль", 4, Weight.create(8));
 
     private final int id;
     private final String name;
@@ -51,7 +51,6 @@ public enum Transport {
                 .findAny()
                 .orElseThrow(
                         () -> {
-                            // Транспорт с id = %d не найден
                             return new ObjectNotFoundException(String.format("Nothing has found by id = %d", id));
                         }
                 );
@@ -68,7 +67,6 @@ public enum Transport {
                 .filter(transport -> transport.getName().equals(name))
                 .findAny()
                 .orElseThrow( () -> {
-                    // Транспорт с названием '%s' не найден
                     return new ObjectNotFoundException(String.format("Nothing has found by name = '%s'", name));
                 });
     }

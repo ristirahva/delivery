@@ -1,17 +1,15 @@
 package ru.task.deliveryapp.core.ports;
 
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
-import ru.task.deliveryapp.core.domain.orderaggregate.Order;
+import ru.task.deliveryapp.core.domain.aggregate.order.Order;
+import ru.task.deliveryapp.infrastructure.adapters.postgres.entity.OrderEntity;
 
-import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
 
-@Repository
-public interface OrderRepository extends CrudRepository<Order, Long> {
-    @Query(value = "SELECT * FROM delivery_order o WHERE o.status<>1", nativeQuery = true)
-    Collection<Order> getAllNotAssigned();
-
-    @Query(value = "SELECT * FROM delivery_order o WHERE o.status=1", nativeQuery = true)
-    Collection<Order> getAllAssigned();
+public interface OrderRepository {
+    Order add(Order order);
+    void update(Order order);
+    Order get(UUID orderId);
+    List<Order> getAllAssigned();
+    List<Order> getAllNotAssigned();
 }

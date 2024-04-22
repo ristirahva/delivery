@@ -1,7 +1,8 @@
-package ru.task.deliveryapp.core.domain.courieraggregate;
+package ru.task.deliveryapp.core.domain.aggregate.courier;
 
 import org.junit.jupiter.api.Test;
 import ru.task.deliveryapp.core.domain.sharedkernel.Location;
+import ru.task.deliveryapp.exception.ValidationException;
 import ru.task.deliveryapp.exception.WrongStateException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -9,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CourierTest {
 
     @Test
-    public void testCreate() {
+    public void testCreate_positive() {
         Courier courier = Courier.create("Курьер Бободжан", Transport.fromName(Transport.BICYCLE.getName()));
         assertAll("Testing create() method",
                 () -> assertEquals("Курьер Бободжан", courier.getName()),
@@ -17,6 +18,24 @@ public class CourierTest {
                 () -> assertEquals(1, courier.getLocation().getX()),
                 () -> assertEquals(1, courier.getLocation().getY()),
                 () -> assertEquals(CourierStatus.NOT_AVAILABLE, courier.getStatus())
+        );
+    }
+
+    @Test
+    public void testCreate_negative_blank() {
+        assertThrows(ValidationException.class,
+                ()-> {
+                    Courier.create("  ", Transport.fromName(Transport.BICYCLE.getName()));
+                }
+        );
+    }
+
+    @Test
+    public void testCreate_negative_null() {
+        assertThrows(ValidationException.class,
+                ()-> {
+                    Courier.create(null, Transport.fromName(Transport.BICYCLE.getName()));
+                }
         );
     }
 

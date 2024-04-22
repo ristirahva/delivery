@@ -1,4 +1,4 @@
-package ru.task.deliveryapp.core.domain.courieraggregate;
+package ru.task.deliveryapp.core.domain.aggregate.courier;
 
 import org.junit.jupiter.api.Test;
 import ru.task.deliveryapp.exception.ObjectNotFoundException;
