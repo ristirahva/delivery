@@ -1,35 +1,31 @@
 package ru.task.deliveryapp.core.domain.sharedkernel;
 
+import jakarta.persistence.Embeddable;
 import ru.task.deliveryapp.exception.ValidationException;
 
-public final class Weight implements Comparable<Weight>{
+@Embeddable
+public class Weight implements Comparable<Weight>{
 
-    private int value;
+    private int weightValue;
 
     private Weight() {}
-
-    private Weight(String input){
-        try {
-            value = Integer.valueOf(input);
-        }
-        catch(NumberFormatException nfe) {
-            throw new ValidationException("Неправильный формат");
-        }
-        if (value <= 0) {
-            throw new ValidationException("Недопустимое значение: " + value);
+    private Weight(int input){
+        weightValue = input;
+        if (weightValue <= 0) {
+            throw new ValidationException(String.format("Illegal value: %d, must be positive", weightValue));
         }
     }
 
-    public static Weight create(String input) {
+    public static Weight create(int input) {
         return new Weight(input);
     }
 
     @Override
     public int compareTo(Weight target) {
-        return getValue() == target.getValue() ? 0 : (getValue() < target.getValue() ? -1 : 1);
+        return getWeightValue() == target.getWeightValue() ? 0 : (getWeightValue() < target.getWeightValue() ? -1 : 1);
     }
 
-    public int getValue() {
-        return value;
+    public int getWeightValue() {
+        return weightValue;
     }
 }
