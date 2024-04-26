@@ -10,5 +10,6 @@ import java.util.UUID;
 
 @Repository
 public interface CourierJpaRepository extends CrudRepository<CourierEntity, UUID> {
-    List<CourierEntity> findByStatus(CourierStatus status);
+    List<CourierEntity> findByStatusOrderByNameAsc(CourierStatus status);
+    List<CourierEntity> findAllByOrderByNameAsc();
 }

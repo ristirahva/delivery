@@ -22,7 +22,7 @@ public class OrderRepositoryIT {
     OrderRepository repository;
 
     @Test
-    @Sql("order_data.sql")
+    @Sql("/order_data.sql")
     public void testGetAllAssigned() {
         List<Order> orders = repository.getAllAssigned();
         assertAll("Testing getAllAssigned() method",
@@ -33,7 +33,7 @@ public class OrderRepositoryIT {
     }
 
     @Test
-    @Sql("order_data.sql")
+    @Sql("/order_data.sql")
     public void testGetAllNotAssigned() {
         List<Order> orders = repository.getAllNotAssigned();
         assertAll("Testing getAllNotAssigned() method",

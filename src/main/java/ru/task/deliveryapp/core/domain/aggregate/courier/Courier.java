@@ -4,7 +4,6 @@ import io.micrometer.common.util.StringUtils;
 import ru.task.deliveryapp.core.domain.sharedkernel.Location;
 import ru.task.deliveryapp.exception.ValidationException;
 import ru.task.deliveryapp.exception.WrongStateException;
-import ru.task.deliveryapp.infrastructure.adapters.postgres.entity.CourierEntity;
 
 import java.util.UUID;
 
@@ -56,15 +55,18 @@ public class Courier {
      * @param targetLocation координаты заказчика.
      */
     public void move(Location targetLocation) {
+        int xDistance = targetLocation.getX() - location.getX();
+        int yDistance = targetLocation.getY() - location.getY();
+        int xDirection = xDistance > 0 ? 1 : (xDistance < 0 ? -1 : 0);
+        int yDirection = yDistance > 0 ? 1 : (yDistance < 0 ? -1 : 0);;
         if (transport.getSpeed() >= location.distanceTo(targetLocation)) {
             location = targetLocation;
-            status = CourierStatus.READY;
         }
-        else if (transport.getSpeed() <= (targetLocation.getX() - location.getX())) {
-            location = Location.create(location.getX() + transport.getSpeed(), location.getY());
+        else if (transport.getSpeed() <= Math.abs(xDistance)) {
+            location = Location.create(location.getX() + transport.getSpeed() * xDirection, location.getY());
         }
         else {
-            location = Location.create(targetLocation.getX(), location.getY() + transport.getSpeed() - (targetLocation.getX() - location.getX()));
+            location = Location.create(targetLocation.getX(), location.getY() + transport.getSpeed() * yDirection - Math.abs(xDistance));
         }
     }
 
@@ -73,8 +75,7 @@ public class Courier {
      */
     public void startWork() {
         if (status == CourierStatus.BUSY) {
-            // Курьер не может начать работу, поскольку уже занят.
-            throw new WrongStateException("A courier must not start to work because he/she is already busy.");
+            throw new WrongStateException("A courier is busy so cannot start working.");
         }
         else {
             status = CourierStatus.READY;
@@ -86,8 +87,7 @@ public class Courier {
      */
     public void stopWork() {
         if (status == CourierStatus.BUSY) {
-            // Курьер не может закончить работу, поскольку занят.
-            throw new WrongStateException("A courier must not stop to work because he/she is busy.");
+            throw new WrongStateException("A courier is busy so cannot stop working.");
         }
         else {
             status = CourierStatus.NOT_AVAILABLE;
@@ -119,6 +119,18 @@ public class Courier {
         int steps = location.distanceTo(targetLocation);
         int timeToPoint = steps / transport.getSpeed() + ((steps % transport.getSpeed()) == 0 ? 0 : 1);
         return timeToPoint;
+    }
+
+    /**
+     * Завершение заказа.
+     */
+    public void completeOrder() {
+        if (status == CourierStatus.BUSY) {
+            status = CourierStatus.READY;
+        }
+        else {
+            throw new WrongStateException(String.format("It is possible to complete the order only if courier status is busy"));
+        }
     }
 
     public UUID getId() {

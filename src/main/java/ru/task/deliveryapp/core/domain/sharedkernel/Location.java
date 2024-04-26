@@ -3,6 +3,8 @@ package ru.task.deliveryapp.core.domain.sharedkernel;
 import jakarta.persistence.Embeddable;
 import ru.task.deliveryapp.exception.ValidationException;
 
+import java.util.Objects;
+
 /**
  * Координаты
  */
@@ -21,7 +23,7 @@ public class Location  {
     }
 
     /**
-     * Создание коорлинаты
+     * Создание координаты
      *
      * @param x абсцисса
      * @param y ордината
@@ -51,5 +53,26 @@ public class Location  {
      */
     public int distanceTo(Location target) {
         return Math.abs(target.getX() - x) + Math.abs(target.getY() - y);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Location location = (Location) o;
+        return x == location.x && y == location.y;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
+    }
+
+    @Override
+    public String toString() {
+        return "Location{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
     }
 }

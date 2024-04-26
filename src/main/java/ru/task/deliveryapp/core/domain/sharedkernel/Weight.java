@@ -3,6 +3,8 @@ package ru.task.deliveryapp.core.domain.sharedkernel;
 import jakarta.persistence.Embeddable;
 import ru.task.deliveryapp.exception.ValidationException;
 
+import java.util.Objects;
+
 @Embeddable
 public class Weight implements Comparable<Weight>{
 
@@ -27,5 +29,18 @@ public class Weight implements Comparable<Weight>{
 
     public int getWeightValue() {
         return weightValue;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Weight weight = (Weight) o;
+        return weightValue == weight.weightValue;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(weightValue);
     }
 }

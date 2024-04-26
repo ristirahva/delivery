@@ -103,8 +103,7 @@ public class CourierTest {
         courier.move(targetLocation);
         assertAll("Testing testMove() method with car, step 4, the final one",
                 () -> assertEquals(6, courier.getLocation().getX()),
-                () -> assertEquals(9, courier.getLocation().getY()),
-                () -> assertEquals(CourierStatus.READY, courier.getStatus())
+                () -> assertEquals(9, courier.getLocation().getY())
         );
     }
 
@@ -187,5 +186,14 @@ public class CourierTest {
                 () -> assertEquals(5,  courier3.calculateTimeToPoint(targetLocation)),
                 () -> assertEquals(4,  courier4.calculateTimeToPoint(targetLocation))
         );
+    }
+
+    @Test
+    public void testCompleteOrder() {
+        Courier courier = Courier.create("Курьер-пешеход", Transport.fromName("Пешеход"));
+        courier.startWork();
+        courier.inWork();
+        courier.completeOrder();
+        assertEquals(CourierStatus.READY, courier.getStatus());
     }
 }

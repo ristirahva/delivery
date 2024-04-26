@@ -1,18 +1,19 @@
 package ru.task.deliveryapp.infrastructure.adapters.postgres;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import ru.task.deliveryapp.core.domain.aggregate.courier.Courier;
 import ru.task.deliveryapp.core.domain.aggregate.courier.CourierStatus;
 import ru.task.deliveryapp.core.ports.CourierRepository;
 import ru.task.deliveryapp.exception.DbException;
+import ru.task.deliveryapp.infrastructure.adapters.postgres.entity.CourierEntity;
 import ru.task.deliveryapp.infrastructure.adapters.postgres.repository.CourierJpaRepository;
 
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Component
+@Service
 public class CourierAdapter implements CourierRepository {
 
     @Autowired
@@ -40,16 +41,17 @@ public class CourierAdapter implements CourierRepository {
 
     @Override
     public Courier get(UUID courierId) {
-        return CourierMapper.toDomain(repository.findById(courierId).get());
+        CourierEntity courierEntity = repository.findById(courierId).get();
+        return CourierMapper.toDomain(courierEntity);
     }
 
     @Override
     public List<Courier> getAllReady() {
-        return repository.findByStatus(CourierStatus.READY).stream().map(entity -> CourierMapper.toDomain(entity)).collect(Collectors.toList());
+        return repository.findByStatusOrderByNameAsc(CourierStatus.READY).stream().map(entity -> CourierMapper.toDomain(entity)).collect(Collectors.toList());
     }
 
     @Override
     public List<Courier> getAllBusy() {
-        return repository.findByStatus(CourierStatus.BUSY).stream().map(entity -> CourierMapper.toDomain(entity)).collect(Collectors.toList());
+        return repository.findByStatusOrderByNameAsc(CourierStatus.BUSY).stream().map(entity -> CourierMapper.toDomain(entity)).collect(Collectors.toList());
     }
 }
