@@ -10,12 +10,16 @@ import ru.task.deliveryapp.core.ports.OrderRepository;
 
 @Service
 public class CreateOrderHandler {
+    private final OrderRepository repository;
+
     @Autowired
-    private OrderRepository repository;
+    public CreateOrderHandler(OrderRepository repository) {
+        this.repository = repository;
+    }
 
     @Transactional
     public void handle(CreateOrderCommand command) {
-        Order order = Order.create(command.getBasketId(), null, OrderStatus.CREATED, Location.create(9, 9), command.getWeight());
+        Order order = Order.create(command.basketId(), null, OrderStatus.CREATED, Location.create(9, 9), command.weight());
         repository.add(order);
     }
 }

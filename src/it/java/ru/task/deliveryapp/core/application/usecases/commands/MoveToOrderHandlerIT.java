@@ -33,7 +33,7 @@ public class MoveToOrderHandlerIT {
         var courierReadyList = courierRepository.getAllReady();
         var orderAssignedList = orderRepository.getAllAssigned();
         var orderNotAssignedList = orderRepository.getAllNotAssigned();
-        assertAll("Testing MoveToOrder testcase",
+        assertAll("Testing MoveToOrder use case",
                 () -> assertNotNull(courierBusyList),
                 () -> assertEquals(2, courierBusyList.size()),
                 () -> assertEquals("Courier2", courierBusyList.get(0).getName()),

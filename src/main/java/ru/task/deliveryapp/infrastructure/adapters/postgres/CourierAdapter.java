@@ -11,13 +11,16 @@ import ru.task.deliveryapp.infrastructure.adapters.postgres.repository.CourierJp
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class CourierAdapter implements CourierRepository {
 
+    private final CourierJpaRepository repository;
+
     @Autowired
-    CourierJpaRepository repository;
+    public CourierAdapter(CourierJpaRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public Courier add(Courier courier) {
@@ -47,11 +50,11 @@ public class CourierAdapter implements CourierRepository {
 
     @Override
     public List<Courier> getAllReady() {
-        return repository.findByStatusOrderByNameAsc(CourierStatus.READY).stream().map(entity -> CourierMapper.toDomain(entity)).collect(Collectors.toList());
+        return CourierMapper.listToDomain(repository.findByStatus(CourierStatus.READY));
     }
 
     @Override
     public List<Courier> getAllBusy() {
-        return repository.findByStatusOrderByNameAsc(CourierStatus.BUSY).stream().map(entity -> CourierMapper.toDomain(entity)).collect(Collectors.toList());
+        return CourierMapper.listToDomain(repository.findByStatus(CourierStatus.BUSY));
     }
 }

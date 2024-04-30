@@ -8,12 +8,16 @@ import ru.task.deliveryapp.core.ports.CourierRepository;
 
 @Service
 public class StartWorkHandler {
+    private final CourierRepository repository;
+
     @Autowired
-    private CourierRepository repository;
+    public StartWorkHandler(CourierRepository repository) {
+        this.repository = repository;
+    }
 
     @Transactional
     public void handle(StartWorkCommand command) {
-        Courier courier = repository.get(command.getCourierId());
+        Courier courier = repository.get(command.courierId());
         courier.startWork();
         repository.update(courier);
     }

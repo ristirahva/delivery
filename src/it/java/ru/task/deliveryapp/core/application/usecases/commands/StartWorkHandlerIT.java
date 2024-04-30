@@ -3,6 +3,7 @@ package ru.task.deliveryapp.core.application.usecases.commands;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.test.context.jdbc.Sql;
 import ru.task.deliveryapp.core.domain.aggregate.courier.Courier;
 import ru.task.deliveryapp.core.domain.aggregate.courier.CourierStatus;
@@ -30,7 +31,7 @@ public class StartWorkHandlerIT {
         StartWorkCommand command = new StartWorkCommand(courierId);
         handler.handle(command);
         Courier courier = repository.get(courierId);
-        assertAll("Testing StartWork usecase",
+        assertAll("Testing StartWork use case",
                 () -> assertNotNull(courier),
                 () -> assertEquals(courierId, courier.getId()),
                 () -> assertEquals(CourierStatus.READY, courier.getStatus())
@@ -39,7 +40,19 @@ public class StartWorkHandlerIT {
 
     @Test
     @Sql("/courier_data.sql")
-    public void testHandle_negative() {
+    public void testHandle_negative_id_is_null() {
+        UUID courierId = null;
+        var command = new StartWorkCommand(courierId);
+        assertThrows(InvalidDataAccessApiUsageException.class,
+                ()-> {
+                    handler.handle(command);
+                }
+        );
+    }
+
+    @Test
+    @Sql("/courier_data.sql")
+    public void testHandle_negative_wrong_state() {
         UUID courierId = UUID.fromString("407f68be-5adf-4e72-81bc-b1d8e9574cf8");
         var command = new StartWorkCommand(courierId);
         assertThrows(WrongStateException.class,

@@ -9,6 +9,9 @@ import java.util.UUID;
 
 public class Courier {
     private final static Location INITIAL_LOCATION = Location.create(1, 1);
+    private static int NEGATIVE_DIRECTION = -1;
+    private static int POSITIVE_DIRECTION = 1;
+    private static int NO_DIRECTION = 0;
 
     private UUID id;
     private String name;
@@ -57,8 +60,8 @@ public class Courier {
     public void move(Location targetLocation) {
         int xDistance = targetLocation.getX() - location.getX();
         int yDistance = targetLocation.getY() - location.getY();
-        int xDirection = xDistance > 0 ? 1 : (xDistance < 0 ? -1 : 0);
-        int yDirection = yDistance > 0 ? 1 : (yDistance < 0 ? -1 : 0);;
+        int xDirection = xDistance > 0 ? POSITIVE_DIRECTION : (xDistance < 0 ? NEGATIVE_DIRECTION : NO_DIRECTION);
+        int yDirection = yDistance > 0 ? POSITIVE_DIRECTION : (yDistance < 0 ? NEGATIVE_DIRECTION : NO_DIRECTION);;
         if (transport.getSpeed() >= location.distanceTo(targetLocation)) {
             location = targetLocation;
         }

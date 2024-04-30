@@ -9,11 +9,16 @@ import ru.task.deliveryapp.core.ports.OrderRepository;
 
 @Service
 public class MoveToOrderHandler {
-    @Autowired
-    private CourierRepository courierRepository;
+
+    private final CourierRepository courierRepository;
+
+    private OrderRepository orderRepository;
 
     @Autowired
-    private OrderRepository orderRepository;
+    public MoveToOrderHandler(CourierRepository courierRepository, OrderRepository orderRepository) {
+        this.courierRepository = courierRepository;
+        this.orderRepository = orderRepository;
+    }
 
     @Transactional
     public void handle() {

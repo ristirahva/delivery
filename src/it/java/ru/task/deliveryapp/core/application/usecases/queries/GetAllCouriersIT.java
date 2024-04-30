@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import ru.task.deliveryapp.core.domain.aggregate.courier.Courier;
-import ru.task.deliveryapp.core.usecases.queries.GetAllCouriers;
 
 import java.util.List;
 

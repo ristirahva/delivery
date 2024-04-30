@@ -1,4 +1,4 @@
-package ru.task.deliveryapp.core.usecases.queries;
+package ru.task.deliveryapp.core.application.usecases.queries;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,9 +14,9 @@ import java.util.stream.Collectors;
 public class GetActiveOrders {
 
     @Autowired
-    OrderJpaRepository repository;
+    private OrderJpaRepository repository;
 
     public List<Order> handle() {
-        return repository.findByStatusNotOrderByIdAsc(OrderStatus.COMPLETED).stream().map(entity -> OrderMapper.toDomain(entity)).collect(Collectors.toList());
+        return repository.findByStatusNot(OrderStatus.COMPLETED).stream().map(entity -> OrderMapper.toDomain(entity)).collect(Collectors.toList());
     }
 }

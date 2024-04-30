@@ -2,7 +2,7 @@ delete from delivery_order;
 delete from courier;
 
 insert into delivery_order (id, status, x, y, weight_value) values('f46b347e-198f-403c-a04d-a1d00e5632be', 0, 1, 1, 3);
-insert into delivery_order (id, status, x, y, weight_value) values('f2959d3e-aadd-470c-9530-c60f3843300a', 0, 1, 1, 3);
+insert into delivery_order (id, status, x, y, weight_value) values('f2959d3e-aadd-470c-9530-c60f3843300a', 0, 1, 1, 9);
 insert into delivery_order (id, status, x, y, weight_value) values('3e7d532f-6a53-406f-829a-b0c9f6a3208a', 0, 2, 9, 3);
 insert into delivery_order (id, status, x, y, weight_value) values('f1df1fd4-228e-46f3-ba04-2661583da754', 0, 7, 2, 3);
 insert into delivery_order (id, status, x, y, weight_value) values('303c5141-7c46-4836-ab3c-027e1cbe075a', 0, 8, 1, 3);

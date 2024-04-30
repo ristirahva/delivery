@@ -8,12 +8,16 @@ import ru.task.deliveryapp.core.ports.CourierRepository;
 
 @Service
 public class StopWorkHandler {
+    private final CourierRepository repository;
+
     @Autowired
-    private CourierRepository repository;
+    public StopWorkHandler(CourierRepository repository) {
+        this.repository = repository;
+    }
 
     @Transactional
     public void handle(StopWorkCommand command) {
-        Courier courier = repository.get(command.getCourierId());
+        Courier courier = repository.get(command.courierId());
         courier.stopWork();
         repository.update(courier);
     }

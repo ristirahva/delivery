@@ -15,8 +15,12 @@ import java.util.stream.Collectors;
 @Component
 public class OrderAdapter implements OrderRepository {
 
+    private final OrderJpaRepository repository;
+
     @Autowired
-    OrderJpaRepository repository;
+    public OrderAdapter(OrderJpaRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public Order add(Order order) {
@@ -45,11 +49,11 @@ public class OrderAdapter implements OrderRepository {
 
     @Override
     public List<Order> getAllAssigned() {
-        return repository.findByStatusOrderByIdAsc(OrderStatus.ASSIGNED).stream().map(entity -> OrderMapper.toDomain(entity)).collect(Collectors.toList());
+        return repository.findByStatus(OrderStatus.ASSIGNED).stream().map(entity -> OrderMapper.toDomain(entity)).collect(Collectors.toList());
     }
 
     @Override
     public List<Order> getAllNotAssigned() {
-        return repository.findByStatusNotOrderByIdAsc(OrderStatus.ASSIGNED).stream().map(entity -> OrderMapper.toDomain(entity)).collect(Collectors.toList());
+        return repository.findByStatusNot(OrderStatus.ASSIGNED).stream().map(entity -> OrderMapper.toDomain(entity)).collect(Collectors.toList());
     }
 }
