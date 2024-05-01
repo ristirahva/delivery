@@ -17,7 +17,7 @@ public class StopWorkHandler {
 
     @Transactional
     public void handle(StopWorkCommand command) {
-        Courier courier = repository.get(command.courierId());
+        var courier = repository.get(command.courierId());
         courier.stopWork();
         repository.update(courier);
     }

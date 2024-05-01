@@ -13,10 +13,14 @@ import java.util.stream.Collectors;
 @Service
 public class GetActiveOrders {
 
+    private final OrderJpaRepository repository;
+
     @Autowired
-    private OrderJpaRepository repository;
+    public GetActiveOrders(OrderJpaRepository repository) {
+        this.repository = repository;
+    }
 
     public List<Order> handle() {
-        return repository.findByStatusNot(OrderStatus.COMPLETED).stream().map(entity -> OrderMapper.toDomain(entity)).collect(Collectors.toList());
+        return OrderMapper.listToDomain(repository.findByStatusNot(OrderStatus.COMPLETED));
     }
 }

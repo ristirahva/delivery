@@ -17,7 +17,7 @@ public class StartWorkHandler {
 
     @Transactional
     public void handle(StartWorkCommand command) {
-        Courier courier = repository.get(command.courierId());
+        var courier = repository.get(command.courierId());
         courier.startWork();
         repository.update(courier);
     }

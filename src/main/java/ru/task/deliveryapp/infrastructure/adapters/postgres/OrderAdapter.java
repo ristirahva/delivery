@@ -49,11 +49,11 @@ public class OrderAdapter implements OrderRepository {
 
     @Override
     public List<Order> getAllAssigned() {
-        return repository.findByStatus(OrderStatus.ASSIGNED).stream().map(entity -> OrderMapper.toDomain(entity)).collect(Collectors.toList());
+        return OrderMapper.listToDomain(repository.findByStatus(OrderStatus.ASSIGNED));
     }
 
     @Override
     public List<Order> getAllNotAssigned() {
-        return repository.findByStatusNot(OrderStatus.ASSIGNED).stream().map(entity -> OrderMapper.toDomain(entity)).collect(Collectors.toList());
+        return OrderMapper.listToDomain(repository.findByStatusNot(OrderStatus.ASSIGNED));
     }
 }

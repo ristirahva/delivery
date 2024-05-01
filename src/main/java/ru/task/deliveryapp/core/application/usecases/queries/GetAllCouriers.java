@@ -10,8 +10,13 @@ import java.util.List;
 
 @Service
 public class GetAllCouriers {
+
+    private final CourierJpaRepository repository;
+
     @Autowired
-    private CourierJpaRepository repository;
+    public GetAllCouriers(CourierJpaRepository repository) {
+        this.repository = repository;
+    }
 
     public List<Courier> handle() {
         return CourierMapper.listToDomain(repository.findAll());

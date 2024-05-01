@@ -44,7 +44,7 @@ public class CourierAdapter implements CourierRepository {
 
     @Override
     public Courier get(UUID courierId) {
-        CourierEntity courierEntity = repository.findById(courierId).get();
+        var courierEntity = repository.findById(courierId).get();
         return CourierMapper.toDomain(courierEntity);
     }
 

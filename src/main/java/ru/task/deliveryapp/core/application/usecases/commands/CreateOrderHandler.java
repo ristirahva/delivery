@@ -19,7 +19,7 @@ public class CreateOrderHandler {
 
     @Transactional
     public void handle(CreateOrderCommand command) {
-        Order order = Order.create(command.basketId(), null, OrderStatus.CREATED, Location.create(9, 9), command.weight());
+        var order = Order.create(command.basketId(), null, OrderStatus.CREATED, Location.create(9, 9), command.weight());
         repository.add(order);
     }
 }

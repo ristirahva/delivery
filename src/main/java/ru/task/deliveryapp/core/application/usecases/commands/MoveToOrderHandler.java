@@ -22,7 +22,7 @@ public class MoveToOrderHandler {
 
     @Transactional
     public void handle() {
-        for (Order order : orderRepository.getAllAssigned()) {
+        for (var order : orderRepository.getAllAssigned()) {
             var courier = courierRepository.get(order.getCourierId());
             courier.move(order.getLocation());
             if (courier.getLocation().equals(order.getLocation())) {
