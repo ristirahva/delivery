@@ -8,9 +8,11 @@ import ru.task.deliveryapp.core.domain.aggregate.courier.Courier;
 import ru.task.deliveryapp.core.domain.aggregate.courier.CourierStatus;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Интеграционный тест репозитория CourierRepository.
@@ -18,10 +20,23 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 public class CourierRepositoryIT {
     @Autowired
-    CourierRepository repository;
+    private CourierRepository repository;
 
     @Test
-    @Sql("courier_data.sql")
+    @Sql("/courier_data.sql")
+    public void testGet() {
+        String courierId = "bf79a004-56d7-4e5f-a21c-0a9e5e08d10d";
+        Courier courier = repository.get(UUID.fromString(courierId));
+        assertAll("Testing get() method",
+                () -> assertNotNull(courier),
+                () -> assertEquals(courierId, courier.getId().toString()),
+                () -> assertEquals("Courier 1", courier.getName()),
+                () -> assertEquals(CourierStatus.NOT_AVAILABLE, courier.getStatus())
+                );
+    }
+
+    @Test
+    @Sql("/courier_data.sql")
     public void testGetAllReady() {
         List<Courier> couriers = repository.getAllReady();
         assertAll("Testing getAllReady() method",
@@ -32,7 +47,7 @@ public class CourierRepositoryIT {
     }
 
     @Test
-    @Sql("courier_data.sql")
+    @Sql("/courier_data.sql")
     public void testGetAllBusy() {
         List<Courier> couriers = repository.getAllBusy();
         assertAll("Testing getAllBusy() method",

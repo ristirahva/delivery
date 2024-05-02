@@ -13,7 +13,7 @@ import java.util.UUID;
 public class OrderEntity {
     @Id
     private UUID id;
-    private UUID courierId; // сознательно не привязываю пока Courier к Order, поскольку это тема следующих занятий
+    private UUID courierId; // сознательно не привязываю Courier к Order
     private OrderStatus status;
     private Location location;
     @Embedded

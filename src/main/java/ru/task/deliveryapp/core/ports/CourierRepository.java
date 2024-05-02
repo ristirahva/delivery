@@ -1,7 +1,6 @@
 package ru.task.deliveryapp.core.ports;
 
 import ru.task.deliveryapp.core.domain.aggregate.courier.Courier;
-import ru.task.deliveryapp.infrastructure.adapters.postgres.entity.CourierEntity;
 
 import java.util.List;
 import java.util.UUID;

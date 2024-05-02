@@ -39,6 +39,7 @@ public class Order {
      * Создание заказа (маппинг из entity)
      *
      * @param id        идентификатор
+     * @param status    статус
      * @param location  координаты заказчика
      * @param weight    вес заказа
      * @return          заказ

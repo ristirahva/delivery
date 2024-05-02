@@ -2,11 +2,11 @@ package ru.task.deliveryapp.infrastructure.adapters.postgres;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.task.deliveryapp.core.domain.aggregate.courier.CourierStatus;
 import ru.task.deliveryapp.core.domain.aggregate.order.Order;
 import ru.task.deliveryapp.core.ports.OrderRepository;
 import ru.task.deliveryapp.core.domain.aggregate.order.OrderStatus;
 import ru.task.deliveryapp.exception.DbException;
+import ru.task.deliveryapp.infrastructure.adapters.postgres.repository.OrderJpaRepository;
 
 import java.util.List;
 import java.util.UUID;
@@ -15,8 +15,12 @@ import java.util.stream.Collectors;
 @Component
 public class OrderAdapter implements OrderRepository {
 
+    private final OrderJpaRepository repository;
+
     @Autowired
-    ru.task.deliveryapp.infrastructure.adapters.postgres.repository.OrderRepository repository;
+    public OrderAdapter(OrderJpaRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public Order add(Order order) {
@@ -45,11 +49,11 @@ public class OrderAdapter implements OrderRepository {
 
     @Override
     public List<Order> getAllAssigned() {
-        return repository.findByStatus(OrderStatus.ASSIGNED).stream().map(entity -> OrderMapper.toDomain(entity)).collect(Collectors.toList());
+        return OrderMapper.listToDomain(repository.findByStatus(OrderStatus.ASSIGNED));
     }
 
     @Override
     public List<Order> getAllNotAssigned() {
-        return repository.findByStatusNot(OrderStatus.ASSIGNED).stream().map(entity -> OrderMapper.toDomain(entity)).collect(Collectors.toList());
+        return OrderMapper.listToDomain(repository.findByStatusNot(OrderStatus.ASSIGNED));
     }
 }
