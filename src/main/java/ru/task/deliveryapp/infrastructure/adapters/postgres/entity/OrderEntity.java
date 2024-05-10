@@ -57,7 +57,4 @@ public class OrderEntity {
      * @param weight    вес заказа
      * @return          заказ
      */
-//    public static OrderEntity create(UUID id, Location location, Weight weight) {
-//        return new OrderEntity(id, location, weight);
-//    }
 }

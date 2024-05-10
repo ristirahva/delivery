@@ -9,8 +9,10 @@ public class WeightTest {
     @Test
     public void testCreate_positive() {
         Weight weight = Weight.create(29);
-        assertNotNull(weight);
-        assertEquals(29, weight.getWeightValue());
+        assertAll("Testing create() method positive case",
+                () -> assertNotNull(weight),
+                () -> assertEquals(29, weight.getWeightValue())
+        );
     }
 
     @Test

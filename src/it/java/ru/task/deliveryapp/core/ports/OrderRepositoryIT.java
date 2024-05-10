@@ -3,6 +3,7 @@ package ru.task.deliveryapp.core.ports;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import ru.task.deliveryapp.core.domain.aggregate.order.Order;
 import ru.task.deliveryapp.infrastructure.adapters.postgres.entity.OrderEntity;
@@ -16,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Интеграционный тест репозитория OrderRepository.
  */
 @SpringBootTest
+@ActiveProfiles("test")
 public class OrderRepositoryIT {
 
     @Autowired

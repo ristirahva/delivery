@@ -3,6 +3,7 @@ package ru.task.deliveryapp.core.ports;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import ru.task.deliveryapp.core.domain.aggregate.courier.Courier;
 import ru.task.deliveryapp.core.domain.aggregate.courier.CourierStatus;
@@ -18,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * Интеграционный тест репозитория CourierRepository.
  */
 @SpringBootTest
+@ActiveProfiles("test")
 public class CourierRepositoryIT {
     @Autowired
     private CourierRepository repository;
