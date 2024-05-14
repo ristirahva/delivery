@@ -1,5 +1,7 @@
 package ru.task.deliveryapp.infrastructure.adapters.postgres;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.task.deliveryapp.core.domain.aggregate.order.Order;
@@ -10,10 +12,11 @@ import ru.task.deliveryapp.infrastructure.adapters.postgres.repository.OrderJpaR
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Component
 public class OrderAdapter implements OrderRepository {
+
+    private static final Logger log = LoggerFactory.getLogger(OrderAdapter.class);
 
     private final OrderJpaRepository repository;
 
@@ -24,6 +27,7 @@ public class OrderAdapter implements OrderRepository {
 
     @Override
     public Order add(Order order) {
+        log.info("Add order: " + order);
         if ((order.getId() == null) || repository.findById(order.getId()).isEmpty()) {
             return OrderMapper.toDomain(repository.save(OrderMapper.toEntity(order)));
         }

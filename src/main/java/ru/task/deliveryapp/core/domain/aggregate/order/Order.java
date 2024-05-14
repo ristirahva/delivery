@@ -90,4 +90,15 @@ public class Order {
     public Weight getWeight() {
         return weight;
     }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", courierId=" + courierId +
+                ", status=" + status +
+                ", location=" + location +
+                ", weight=" + weight +
+                '}';
+    }
 }

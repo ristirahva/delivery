@@ -156,4 +156,14 @@ public class Courier {
         return status;
     }
 
+    @Override
+    public String toString() {
+        return "Courier{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", transport=" + transport +
+                ", location=" + location +
+                ", status=" + status +
+                '}';
+    }
 }

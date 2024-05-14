@@ -9,9 +9,11 @@ public final class LocationTest {
     @Test
     public void testCreate_positive() {
         Location location = Location.create(2, 5);
-        assertNotNull(location);
-        assertEquals(2, location.getX());
-        assertEquals(5, location.getY());
+        assertAll("Testing create() method positive case",
+                () -> assertNotNull(location),
+                () -> assertEquals(2, location.getX()),
+                () ->assertEquals(5, location.getY())
+        );
     }
 
     @Test
