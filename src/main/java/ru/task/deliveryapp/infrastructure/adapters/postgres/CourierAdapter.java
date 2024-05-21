@@ -1,12 +1,14 @@
 package ru.task.deliveryapp.infrastructure.adapters.postgres;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.task.deliveryapp.core.domain.aggregate.courier.Courier;
 import ru.task.deliveryapp.core.domain.aggregate.courier.CourierStatus;
 import ru.task.deliveryapp.core.ports.CourierRepository;
 import ru.task.deliveryapp.exception.DbException;
-import ru.task.deliveryapp.infrastructure.adapters.postgres.entity.CourierEntity;
+import ru.task.deliveryapp.exception.ObjectNotFoundException;
 import ru.task.deliveryapp.infrastructure.adapters.postgres.repository.CourierJpaRepository;
 
 import java.util.List;
@@ -14,6 +16,8 @@ import java.util.UUID;
 
 @Service
 public class CourierAdapter implements CourierRepository {
+
+    private static final Logger log = LoggerFactory.getLogger(CourierAdapter.class);
 
     private final CourierJpaRepository repository;
 
@@ -44,7 +48,8 @@ public class CourierAdapter implements CourierRepository {
 
     @Override
     public Courier get(UUID courierId) {
-        var courierEntity = repository.findById(courierId).get();
+        log.info("Get courier by id: {}", courierId);
+        var courierEntity = repository.findById(courierId).orElseThrow(() -> new ObjectNotFoundException("Courier not found by id: " + courierId));
         return CourierMapper.toDomain(courierEntity);
     }
 
