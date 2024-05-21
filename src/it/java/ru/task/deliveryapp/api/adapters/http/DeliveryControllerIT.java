@@ -4,9 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.jdbc.Sql;
 import ru.task.deliveryapp.api.adapters.http.contract.model.CourierModel;
 import ru.task.deliveryapp.api.adapters.http.contract.model.OrderModel;
@@ -22,7 +21,10 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static ru.task.deliveryapp.api.adapters.http.DeliveryApi.*;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {
+        "scheduling.enabled: false"}
+)
+@Rollback
 public class DeliveryControllerIT {
 
     @Autowired
@@ -38,14 +40,13 @@ public class DeliveryControllerIT {
 
     @Test
     public void testCreateOrder_negative_exists() {
-        var response = restTemplate.postForEntity(CREATE_ORDER, new CreateOrderCommand(UUID.fromString("977a4941-2baa-4a36-9a7f-6ce587064c71"), "Location", Weight.create(5)), CreateOrderCommand.class);
+        var response = restTemplate.postForEntity(CREATE_ORDER, new CreateOrderCommand(UUID.fromString("4931cb3f-80e3-40a2-880a-9d5e13cb6151"), "Location", Weight.create(5)), CreateOrderCommand.class);
         assertAll(String.format("Testing %s endpoint, the order is already exists", CREATE_ORDER),
                 () -> assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode())
         );
     }
 
     @Test
-    @Sql("/courier_data.sql")
     public void testStartWork() {
         var response = restTemplate.postForEntity("/api/v1/couriers/bf79a004-56d7-4e5f-a21c-0a9e5e08d10d/start-work", new StartWorkCommand(UUID.randomUUID()), StartWorkCommand.class);
         assertAll(String.format("Testing %s endpoint", START_WORK),
@@ -54,16 +55,14 @@ public class DeliveryControllerIT {
     }
 
     @Test
-    @Sql("/courier_data.sql")
     public void testStartWork_negative_wrong_status() {
-        var response = restTemplate.postForEntity("/api/v1/couriers/407f68be-5adf-4e72-81bc-b1d8e9574cf8/start-work", new StartWorkCommand(UUID.randomUUID()), StartWorkCommand.class);
+        var response = restTemplate.postForEntity("/api/v1/couriers/4bbcb112-253f-457f-bb61-4bc52cf0357c/start-work", new StartWorkCommand(UUID.randomUUID()), StartWorkCommand.class);
         assertAll(String.format("Testing %s endpoint", START_WORK),
                 () -> assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode())
         );
     }
 
     @Test
-    @Sql("/courier_data.sql")
     public void testStartWork_negative_not_found() {
         var response = restTemplate.postForEntity("/api/v1/couriers/21282439-0381-446c-8df7-6543cba02c55/start-work", new StartWorkCommand(UUID.randomUUID()), StartWorkCommand.class);
         assertAll(String.format("Testing %s endpoint when courier not found", START_WORK),
@@ -72,25 +71,22 @@ public class DeliveryControllerIT {
     }
 
     @Test
-    @Sql("/courier_data.sql")
     public void testStopWork() {
-        var response = restTemplate.postForEntity("/api/v1/couriers/324d8231-32bf-4159-b360-4705aa80ce1f/stop-work", new StopWorkCommand(UUID.randomUUID()), StopWorkCommand.class);
+        var response = restTemplate.postForEntity("/api/v1/couriers/070b2db6-e553-4abf-bebc-345a115cd277/stop-work", new StopWorkCommand(UUID.randomUUID()), StopWorkCommand.class);
         assertAll(String.format("Testing %s endpoint", START_WORK),
                 () -> assertEquals(HttpStatus.OK, response.getStatusCode())
         );
     }
 
     @Test
-    @Sql("/courier_data.sql")
     public void testStopWork_negative_wrong_status() {
-        var response = restTemplate.postForEntity("/api/v1/couriers/407f68be-5adf-4e72-81bc-b1d8e9574cf8/stop-work", new StartWorkCommand(UUID.randomUUID()), StartWorkCommand.class);
+        var response = restTemplate.postForEntity("/api/v1/couriers/4bbcb112-253f-457f-bb61-4bc52cf0357c/stop-work", new StartWorkCommand(UUID.randomUUID()), StartWorkCommand.class);
         assertAll(String.format("Testing %s endpoint when courier is busy", STOP_WORK),
                 () -> assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode())
         );
     }
 
     @Test
-    @Sql("/courier_data.sql")
     public void testStopWork_negative_not_found() {
         var response = restTemplate.postForEntity("/api/v1/couriers/21282439-0381-446c-8df7-6543cba02c55/stop-work", new StartWorkCommand(UUID.randomUUID()), StartWorkCommand.class);
         assertAll(String.format("Testing %s endpoint when courier not found", STOP_WORK),
@@ -99,16 +95,15 @@ public class DeliveryControllerIT {
     }
 
     @Test
-    @Sql("/courier_data.sql")
     public void testGetAllCouriers() {
         var response = restTemplate.getForEntity(GET_ALL_COURIERS, CourierModel[].class);
         CourierModel couriers[] = response.getBody();
         var courierList = Arrays.stream(couriers).sorted((c1, c2)->c1.id().toString().compareTo(c2.id().toString())).toList();
         assertAll(String.format("Testing %s endpoint", GET_ALL_COURIERS),
                 () -> assertEquals(HttpStatus.OK, response.getStatusCode()),
-                () -> assertEquals(4, couriers.length),
-                () -> assertEquals(UUID.fromString("324d8231-32bf-4159-b360-4705aa80ce1f"), courierList.get(0).id()),
-                () -> assertEquals("Courier 2", courierList.get(0).name())
+                () -> assertEquals(5, couriers.length),
+                () -> assertEquals(UUID.fromString("070b2db6-e553-4abf-bebc-345a115cd277"), courierList.get(0).id()),
+                () -> assertEquals("Courier 4", courierList.get(0).name())
         );
     }
 

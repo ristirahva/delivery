@@ -9,22 +9,27 @@ import ru.task.deliveryapp.core.domain.aggregate.order.Order;
 import ru.task.deliveryapp.core.domain.aggregate.order.OrderStatus;
 import ru.task.deliveryapp.core.domain.sharedkernel.Location;
 import ru.task.deliveryapp.core.ports.OrderRepository;
+import ru.task.deliveryapp.infrastructure.adapters.grpc.fwoservice.GeoClient;
 
 @Service
 public class CreateOrderHandler {
+
     private static final Logger log = LoggerFactory.getLogger(CreateOrderHandler.class);
 
-    private final OrderRepository repository;
+    private GeoClient geoClient;
+    private OrderRepository repository;
 
     @Autowired
-    public CreateOrderHandler(OrderRepository repository) {
+    public CreateOrderHandler(GeoClient geoClient, OrderRepository repository) {
+        this.geoClient = geoClient;
         this.repository = repository;
     }
 
     @Transactional
     public void handle(CreateOrderCommand command) {
+        Location location = geoClient.getLocation(command.address());
         log.info("Handling order: " + command);
-        var order = Order.create(command.basketId(), null, OrderStatus.CREATED, Location.create(9, 9), command.weight());
+        var order = Order.create(command.basketId(), null, OrderStatus.CREATED, location, command.weight());
         repository.add(order);
     }
 }

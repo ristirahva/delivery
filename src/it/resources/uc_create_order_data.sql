@@ -1,6 +1,6 @@
--- delete from courier;
--- insert into public.courier (x,y,name,status,transport, id) values (1, 1,'Courier 1', 2, 1, '851413ff-34a2-4f14-8678-56e7fea85af8');
--- insert into public.courier (x,y,name,status,transport, id) values (1, 1,'Courier 2', 2, 2, 'b8023780-96e3-409a-b4e0-0b771eb1b30f');
+delete from courier;
+insert into public.courier (x,y,name,status,transport, id) values (1, 1,'Courier 1', 2, 1, '851413ff-34a2-4f14-8678-56e7fea85af8');
+insert into public.courier (x,y,name,status,transport, id) values (1, 1,'Courier 2', 2, 2, 'b8023780-96e3-409a-b4e0-0b771eb1b30f');
 
 delete from delivery_order;
 insert into delivery_order (id, status, x, y, weight_value) values('4931cb3f-80e3-40a2-880a-9d5e13cb6151', 0, 1, 1, 3);

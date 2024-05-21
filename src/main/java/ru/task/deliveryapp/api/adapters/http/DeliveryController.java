@@ -7,12 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.task.deliveryapp.api.adapters.http.contract.model.*;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.request.NativeWebRequest;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -21,6 +19,7 @@ import ru.task.deliveryapp.core.application.usecases.commands.*;
 import ru.task.deliveryapp.core.application.usecases.queries.GetActiveOrders;
 import ru.task.deliveryapp.core.application.usecases.queries.GetAllCouriers;
 import ru.task.deliveryapp.exception.DbException;
+import ru.task.deliveryapp.exception.ObjectNotFoundException;
 import ru.task.deliveryapp.exception.WrongStateException;
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-05-02T22:44:02.959289500+03:00[Europe/Moscow]", comments = "Generator version: 7.5.0")
@@ -75,7 +74,7 @@ public class DeliveryController implements DeliveryApi {
             startWorkHandler.handle(new StartWorkCommand(id));
         } catch (WrongStateException wse) {
             status = HttpStatus.BAD_REQUEST;
-        } catch (NoSuchElementException nsee) {
+        } catch (ObjectNotFoundException obfe) {
             status = HttpStatus.NOT_FOUND;
         }
         return new ResponseEntity<>(status);
@@ -88,7 +87,7 @@ public class DeliveryController implements DeliveryApi {
             stopWorkHandler.handle(new StopWorkCommand(id));
         } catch (WrongStateException wse) {
             status = HttpStatus.BAD_REQUEST;
-        } catch (NoSuchElementException nsee) {
+        } catch (ObjectNotFoundException obfe) {
             status = HttpStatus.NOT_FOUND;
         }
         return new ResponseEntity<>(status);
