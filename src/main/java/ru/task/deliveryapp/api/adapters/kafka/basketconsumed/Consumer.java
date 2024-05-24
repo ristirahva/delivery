@@ -10,7 +10,8 @@ import ru.task.deliveryapp.ContractKafka;
 public class Consumer {
     private static final Logger log = LoggerFactory.getLogger(Consumer.class);
     @KafkaListener(topics = "basket.confirmed", groupId = "NotificationConsumerGroup")
-    public void listenBasket(ContractKafka.BasketConfirmedIntegrationEvent message) {
-        log.info("!!!!! Received Message in topic basket.confirmed: " + message.getBasketId());
+    //public void listenBasket(ContractKafka.BasketConfirmedIntegrationEvent message) {
+    public void listenBasket(BasketConfirmedIntegrationEvent message) {
+        log.info("!!!!! Received Message in topic basket.confirmed: " + message);
     }
 }
