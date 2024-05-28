@@ -1,13 +1,18 @@
 package ru.task.deliveryapp.core.domain.aggregate.courier;
 
 import io.micrometer.common.util.StringUtils;
+import ru.task.deliveryapp.core.domain.aggregate.Aggregate;
+import ru.task.deliveryapp.core.domain.aggregate.courier.events.CourierDomainEvent;
 import ru.task.deliveryapp.core.domain.sharedkernel.Location;
 import ru.task.deliveryapp.exception.ValidationException;
 import ru.task.deliveryapp.exception.WrongStateException;
 
 import java.util.UUID;
 
-public class Courier {
+/*
+Courier aggregate
+ */
+public class Courier extends Aggregate<CourierDomainEvent> {
     private final static Location INITIAL_LOCATION = Location.create(1, 1);
     private static int NEGATIVE_DIRECTION = -1;
     private static int POSITIVE_DIRECTION = 1;
