@@ -7,6 +7,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import ru.task.deliveryapp.core.domain.aggregate.courier.Courier;
 import ru.task.deliveryapp.core.domain.aggregate.courier.CourierStatus;
+import ru.task.deliveryapp.core.ports.db.CourierRepository;
 
 import java.util.List;
 import java.util.UUID;

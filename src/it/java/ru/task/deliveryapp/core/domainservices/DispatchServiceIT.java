@@ -7,8 +7,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import ru.task.deliveryapp.core.domain.aggregate.courier.Courier;
 import ru.task.deliveryapp.core.domain.aggregate.order.Order;
-import ru.task.deliveryapp.core.ports.CourierRepository;
-import ru.task.deliveryapp.core.ports.OrderRepository;
+import ru.task.deliveryapp.core.ports.db.CourierRepository;
+import ru.task.deliveryapp.core.ports.db.OrderRepository;
 
 import java.util.List;
 import java.util.UUID;

@@ -1,13 +1,18 @@
 package ru.task.deliveryapp.core.domain.aggregate.order;
 
+import ru.task.deliveryapp.core.domain.aggregate.Aggregate;
 import ru.task.deliveryapp.core.domain.aggregate.courier.Courier;
+import ru.task.deliveryapp.core.domain.aggregate.order.events.OrderDomainEvent;
 import ru.task.deliveryapp.core.domain.sharedkernel.Location;
 import ru.task.deliveryapp.core.domain.sharedkernel.Weight;
 import ru.task.deliveryapp.exception.WrongStateException;
 
 import java.util.UUID;
 
-public class Order {
+/**
+ * Order aggregate
+ */
+public class Order extends Aggregate<OrderDomainEvent> {
 
     private UUID id;
     private UUID courierId;
@@ -21,6 +26,8 @@ public class Order {
         this.status = status;
         this.location = location;
         this.weight = weight;
+
+        raiseDomainEvent(new OrderDomainEvent(UUID.randomUUID(), id, status));
     }
 
     /**
@@ -56,6 +63,7 @@ public class Order {
     public void assign(Courier courier) {
         status = OrderStatus.ASSIGNED;
         courierId = courier.getId();
+        raiseDomainEvent(new OrderDomainEvent(UUID.randomUUID(), id, status));
     }
 
     /**
@@ -64,6 +72,7 @@ public class Order {
     public void complete() {
         if (status == OrderStatus.ASSIGNED) {
             status = OrderStatus.COMPLETED;
+            raiseDomainEvent(new OrderDomainEvent(UUID.randomUUID(), id, status));
         }
         else {
             // Заказ не может быть завершён, поскольку не был назначен.

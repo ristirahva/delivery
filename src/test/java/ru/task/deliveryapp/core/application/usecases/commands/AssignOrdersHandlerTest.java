@@ -7,8 +7,8 @@ import ru.task.deliveryapp.core.domain.aggregate.order.Order;
 import ru.task.deliveryapp.core.domain.sharedkernel.Location;
 import ru.task.deliveryapp.core.domain.sharedkernel.Weight;
 import ru.task.deliveryapp.core.domainservices.DispatchService;
-import ru.task.deliveryapp.core.ports.CourierRepository;
-import ru.task.deliveryapp.core.ports.OrderRepository;
+import ru.task.deliveryapp.core.ports.db.CourierRepository;
+import ru.task.deliveryapp.core.ports.db.OrderRepository;
 
 import java.util.ArrayList;
 import java.util.UUID;

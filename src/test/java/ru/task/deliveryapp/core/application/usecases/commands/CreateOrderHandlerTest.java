@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import ru.task.deliveryapp.core.domain.aggregate.order.Order;
 import ru.task.deliveryapp.core.domain.sharedkernel.Location;
 import ru.task.deliveryapp.core.domain.sharedkernel.Weight;
-import ru.task.deliveryapp.core.ports.OrderRepository;
+import ru.task.deliveryapp.core.ports.db.OrderRepository;
 import ru.task.deliveryapp.infrastructure.adapters.grpc.fwoservice.GeoClient;
 
 import java.util.UUID;

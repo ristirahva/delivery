@@ -6,7 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import ru.task.deliveryapp.core.domain.aggregate.order.Order;
-import ru.task.deliveryapp.infrastructure.adapters.postgres.entity.OrderEntity;
+import ru.task.deliveryapp.core.ports.db.OrderRepository;
 import ru.task.deliveryapp.core.domain.aggregate.order.OrderStatus;
 
 import java.util.List;

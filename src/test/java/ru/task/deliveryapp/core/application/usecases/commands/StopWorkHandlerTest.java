@@ -3,7 +3,7 @@ package ru.task.deliveryapp.core.application.usecases.commands;
 import org.junit.jupiter.api.Test;
 import ru.task.deliveryapp.core.domain.aggregate.courier.Courier;
 import ru.task.deliveryapp.core.domain.aggregate.courier.Transport;
-import ru.task.deliveryapp.core.ports.CourierRepository;
+import ru.task.deliveryapp.core.ports.db.CourierRepository;
 
 import java.util.UUID;
 

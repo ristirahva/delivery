@@ -5,30 +5,37 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.task.deliveryapp.core.domain.aggregate.order.Order;
-import ru.task.deliveryapp.core.ports.OrderRepository;
+import ru.task.deliveryapp.core.ports.db.OrderRepository;
 import ru.task.deliveryapp.core.domain.aggregate.order.OrderStatus;
+import ru.task.deliveryapp.core.ports.msg.Producer;
 import ru.task.deliveryapp.exception.DbException;
 import ru.task.deliveryapp.infrastructure.adapters.postgres.repository.OrderJpaRepository;
 
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * DB operations with orders.
+ */
 @Component
 public class OrderAdapter implements OrderRepository {
 
     private static final Logger log = LoggerFactory.getLogger(OrderAdapter.class);
 
     private final OrderJpaRepository repository;
+    private final Producer kafkaOrderAdapter;
 
     @Autowired
-    public OrderAdapter(OrderJpaRepository repository) {
+    public OrderAdapter(OrderJpaRepository repository, Producer kafkaRepository) {
         this.repository = repository;
+        this.kafkaOrderAdapter = kafkaRepository;
     }
 
     @Override
     public Order add(Order order) {
-        log.info("Add order: " + order);
+        log.info("Add order into DB: " + order);
         if ((order.getId() == null) || repository.findById(order.getId()).isEmpty()) {
+            kafkaOrderAdapter.sendEvents(order);
             return OrderMapper.toDomain(repository.save(OrderMapper.toEntity(order)));
         }
         else {
@@ -39,6 +46,7 @@ public class OrderAdapter implements OrderRepository {
     @Override
     public void update(Order order) {
         if (order.getId() != null && !repository.findById(order.getId()).isEmpty()) {
+            kafkaOrderAdapter.sendEvents(order);
             repository.save(OrderMapper.toEntity(order));
         }
         else {
