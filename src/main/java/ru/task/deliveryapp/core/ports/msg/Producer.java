@@ -1,8 +1,8 @@
-package ru.task.deliveryapp.core.ports.kafka;
+package ru.task.deliveryapp.core.ports.msg;
 
 import ru.task.deliveryapp.core.domain.aggregate.order.Order;
 
-public interface KafkaRepository {
+public interface Producer {
     /**
      * Sending notifications about order status changes.
      *

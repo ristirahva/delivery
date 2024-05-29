@@ -14,9 +14,9 @@ Courier aggregate
  */
 public class Courier extends Aggregate<CourierDomainEvent> {
     private final static Location INITIAL_LOCATION = Location.create(1, 1);
-    private static int NEGATIVE_DIRECTION = -1;
-    private static int POSITIVE_DIRECTION = 1;
-    private static int NO_DIRECTION = 0;
+    private final static int NEGATIVE_DIRECTION = -1;
+    private final static int POSITIVE_DIRECTION = 1;
+    private final static int NO_DIRECTION = 0;
 
     private UUID id;
     private String name;

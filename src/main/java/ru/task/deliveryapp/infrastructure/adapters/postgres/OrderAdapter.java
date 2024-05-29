@@ -7,9 +7,8 @@ import org.springframework.stereotype.Component;
 import ru.task.deliveryapp.core.domain.aggregate.order.Order;
 import ru.task.deliveryapp.core.ports.db.OrderRepository;
 import ru.task.deliveryapp.core.domain.aggregate.order.OrderStatus;
-import ru.task.deliveryapp.core.ports.kafka.KafkaRepository;
+import ru.task.deliveryapp.core.ports.msg.Producer;
 import ru.task.deliveryapp.exception.DbException;
-import ru.task.deliveryapp.infrastructure.adapters.kafka.KafkaOrderAdapter;
 import ru.task.deliveryapp.infrastructure.adapters.postgres.repository.OrderJpaRepository;
 
 import java.util.List;
@@ -19,15 +18,15 @@ import java.util.UUID;
  * DB operations with orders.
  */
 @Component
-public class DbOrderAdapter implements OrderRepository {
+public class OrderAdapter implements OrderRepository {
 
-    private static final Logger log = LoggerFactory.getLogger(DbOrderAdapter.class);
+    private static final Logger log = LoggerFactory.getLogger(OrderAdapter.class);
 
     private final OrderJpaRepository repository;
-    private KafkaRepository kafkaOrderAdapter;
+    private final Producer kafkaOrderAdapter;
 
     @Autowired
-    public DbOrderAdapter(OrderJpaRepository repository, KafkaRepository kafkaRepository) {
+    public OrderAdapter(OrderJpaRepository repository, Producer kafkaRepository) {
         this.repository = repository;
         this.kafkaOrderAdapter = kafkaRepository;
     }

@@ -15,7 +15,7 @@ public class Consumer {
 
     private static final Logger log = LoggerFactory.getLogger(Consumer.class);
 
-    private CreateOrderHandler createOrderHandler;
+    private final CreateOrderHandler createOrderHandler;
 
     @Autowired
     public Consumer(CreateOrderHandler createOrderHandler) {
