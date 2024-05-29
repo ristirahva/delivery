@@ -6,8 +6,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import ru.task.deliveryapp.core.domain.sharedkernel.Location;
-import ru.task.deliveryapp.core.ports.CourierRepository;
-import ru.task.deliveryapp.core.ports.OrderRepository;
+import ru.task.deliveryapp.core.ports.db.CourierRepository;
+import ru.task.deliveryapp.core.ports.db.OrderRepository;
 
 import java.util.UUID;
 

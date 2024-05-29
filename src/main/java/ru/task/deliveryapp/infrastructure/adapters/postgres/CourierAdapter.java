@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.task.deliveryapp.core.domain.aggregate.courier.Courier;
 import ru.task.deliveryapp.core.domain.aggregate.courier.CourierStatus;
-import ru.task.deliveryapp.core.ports.CourierRepository;
+import ru.task.deliveryapp.core.ports.db.CourierRepository;
 import ru.task.deliveryapp.exception.DbException;
 import ru.task.deliveryapp.exception.ObjectNotFoundException;
 import ru.task.deliveryapp.infrastructure.adapters.postgres.repository.CourierJpaRepository;

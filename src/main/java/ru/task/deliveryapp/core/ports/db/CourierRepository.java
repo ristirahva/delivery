@@ -1,4 +1,4 @@
-package ru.task.deliveryapp.core.ports;
+package ru.task.deliveryapp.core.ports.db;
 
 import ru.task.deliveryapp.core.domain.aggregate.courier.Courier;
 

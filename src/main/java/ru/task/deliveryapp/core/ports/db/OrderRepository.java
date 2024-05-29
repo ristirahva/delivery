@@ -1,7 +1,6 @@
-package ru.task.deliveryapp.core.ports;
+package ru.task.deliveryapp.core.ports.db;
 
 import ru.task.deliveryapp.core.domain.aggregate.order.Order;
-import ru.task.deliveryapp.infrastructure.adapters.postgres.entity.OrderEntity;
 
 import java.util.List;
 import java.util.UUID;
