@@ -1,4 +1,4 @@
-create table if not exists public.courier (
+create table public.courier (
  	id uuid PRIMARY KEY,
 	status int NOT NULL,
 	transport int NOT NULL,
