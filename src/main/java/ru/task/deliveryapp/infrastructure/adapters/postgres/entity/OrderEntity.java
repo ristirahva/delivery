@@ -19,7 +19,8 @@ public class OrderEntity {
     @Embedded
     private Weight weight;
 
-    private OrderEntity() {}
+    private OrderEntity() {
+    }
 
     public OrderEntity(UUID id, UUID courierId, OrderStatus status, Location location, Weight weight) {
         this.id = id;
@@ -49,12 +50,4 @@ public class OrderEntity {
         return weight;
     }
 
-    /**
-     * Создание заказа.
-     *
-     * @param id        идентификатор
-     * @param location  координаты заказчика
-     * @param weight    вес заказа
-     * @return          заказ
-     */
 }
